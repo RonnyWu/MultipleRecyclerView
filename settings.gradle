@@ -1,0 +1,1 @@
+include ':multiple-recycler-view', ':example-java', ':example-kotlin'
