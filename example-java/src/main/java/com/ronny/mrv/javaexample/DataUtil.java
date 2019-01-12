@@ -40,7 +40,8 @@ public class DataUtil {
     }
 
     public static String getStudentClass() {
-        return "class " + new Random().nextInt(8) + 1;
+        int studentClass = new Random().nextInt(8) + 1;
+        return "class " + studentClass;
     }
 
     public static Student getRandomStudent() {

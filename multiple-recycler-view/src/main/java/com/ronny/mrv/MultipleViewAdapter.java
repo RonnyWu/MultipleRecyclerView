@@ -27,8 +27,6 @@ import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,7 +143,7 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
                 Manager manager = mManagersMapping.get(key);
                 if (null != manager) {
                     // noinspection unchecked
-                    manager.onPayloadViewHolder((MultipleViewHolder) holder, (JSONObject) payloads.get(position), position);
+                    manager.onPayloadViewHolder((MultipleViewHolder) holder, (ArrayMap<String, Object>) payloads.get(0), position);
                 } else {
                     // TODO 没有 Manager 无法对数据进行相关操作.
                 }
@@ -168,9 +166,9 @@ public class MultipleViewAdapter extends RecyclerView.Adapter {
     public void setAllDataSource(List<Object> allDataSource) {
         mOldDataSource.clear();
         mOldDataSource.addAll(mAllDataSource);
-        
         mAllDataSource.clear();
         mAllDataSource.addAll(allDataSource);
+
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(mDifferenceComparison, true);
         diffResult.dispatchUpdatesTo(this);
     }

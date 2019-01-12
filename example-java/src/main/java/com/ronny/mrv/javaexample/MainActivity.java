@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private List<Object> mAllDataSource;
     private MultipleViewAdapter mMultipleViewAdapter;
+    private int looper = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         mAllDataSource = new ArrayList<>();
-
         mAllDataSource.add(DataUtil.getRandomStudent());
-        // mAllDataSource.add(DataUtil.getRandomStudent());
 
         mRecyclerView = findViewById(R.id.recycler_view);
         mMultipleViewAdapter = new MultipleViewAdapter();
@@ -44,17 +43,22 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                // mAllDataSource.remove(0);
-                List<Object> newDataSource = new ArrayList<>();
-                newDataSource.addAll(mAllDataSource);
-
-                Student student = (Student) newDataSource.get(0);
-                student.mName = DataUtil.getStudentName();
-                newDataSource.set(0,student);
-                newDataSource.add(DataUtil.getRandomStudent());
-                mMultipleViewAdapter.setAllDataSource(newDataSource);
+                Student oldStudent = (Student) mAllDataSource.get(0);
+                Student modifyStudent = new Student();
+                modifyStudent.mNumber = oldStudent.mNumber;
+                modifyStudent.mName = DataUtil.getStudentName();
+                modifyStudent.mAge = DataUtil.getStudentAge();
+                modifyStudent.mSex = DataUtil.getStudentSex();
+                modifyStudent.mClass = DataUtil.getStudentClass();
+                mAllDataSource.set(0, modifyStudent);
+                // mAllDataSource.add(DataUtil.getRandomStudent());
+                mMultipleViewAdapter.setAllDataSource(mAllDataSource);
+                looper--;
+                if (looper > 0) {
+                    test();
+                }
             }
-        }, 1000);
+        }, 2000);
     }
 
 

@@ -1,13 +1,11 @@
 package com.ronny.mrv.javaexample;
 
+import android.util.ArrayMap;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.ronny.mrv.Manager;
 import com.ronny.mrv.MultipleViewHolder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 
@@ -49,27 +47,23 @@ public class StudentManager extends Manager<Student> {
     }
 
     @Override
-    public void onPayloadViewHolder(MultipleViewHolder holder, JSONObject payload, int position) {
+    public void onPayloadViewHolder(MultipleViewHolder holder, ArrayMap<String, Object> payload, int position) {
         Log.e("AAAAA", "payload getter >>>> " + payload.toString());
-        try {
-            if (!payload.getString("name").isEmpty()) {
-                TextView mName = holder.getView(R.id.text_view_name);
-                mName.setText(payload.getString("name"));
-            }
-            if (!payload.getString("age").isEmpty()) {
-                TextView mAge = holder.getView(R.id.text_view_age);
-                mAge.setText(payload.getString("age"));
-            }
-            if (!payload.getString("sex").isEmpty()) {
-                TextView mSex = holder.getView(R.id.text_view_sex);
-                mSex.setText(payload.getString("sex"));
-            }
-            if (!payload.getString("class").isEmpty()) {
-                TextView mClass = holder.getView(R.id.text_view_class);
-                mClass.setText(payload.getString("class"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (null != payload.get("name")) {
+            TextView mName = holder.getView(R.id.text_view_name);
+            mName.setText((CharSequence) payload.get("name"));
+        }
+        if (null != payload.get("age")) {
+            TextView mAge = holder.getView(R.id.text_view_age);
+            mAge.setText((CharSequence) payload.get("age"));
+        }
+        if (null != payload.get("sex")) {
+            TextView mSex = holder.getView(R.id.text_view_sex);
+            mSex.setText((CharSequence) payload.get("sex"));
+        }
+        if (null != payload.get("class")) {
+            TextView mClass = holder.getView(R.id.text_view_class);
+            mClass.setText((CharSequence) payload.get("class"));
         }
     }
 
@@ -90,26 +84,21 @@ public class StudentManager extends Manager<Student> {
     }
 
     @Override
-    public JSONObject onPayloadComparison(Student oldData, Student newData) {
-        try {
-            JSONObject payload = new JSONObject();
-            if (!oldData.mName.equals(newData.mName)) {
-                payload.put("name", newData.mName);
-            }
-            if (!oldData.mAge.equals(newData.mAge)) {
-                payload.put("age", newData.mAge);
-            }
-            if (!oldData.mSex.equals(newData.mSex)) {
-                payload.put("sex", newData.mSex);
-            }
-            if (!oldData.mClass.equals(newData.mClass)) {
-                payload.put("class", newData.mClass);
-            }
-            Log.e("AAAAA", "payload setter >>>> " + payload.toString());
-            return payload;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
+    public ArrayMap<String, Object> onPayloadComparison(Student oldData, Student newData) {
+        ArrayMap<String, Object> payload = new ArrayMap<>();
+        if (!oldData.mName.equals(newData.mName)) {
+            payload.put("name", newData.mName);
         }
+        if (!oldData.mAge.equals(newData.mAge)) {
+            payload.put("age", newData.mAge);
+        }
+        if (!oldData.mSex.equals(newData.mSex)) {
+            payload.put("sex", newData.mSex);
+        }
+        if (!oldData.mClass.equals(newData.mClass)) {
+            payload.put("class", newData.mClass);
+        }
+        Log.e("AAAAA", "payload setter >>>> " + payload.toString());
+        return payload;
     }
 }
